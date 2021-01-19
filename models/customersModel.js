@@ -4,19 +4,25 @@ const Customers = mongoose.model('Customers', {
         type: String
     },
     email: {
-        type: String
+        type: String,
+        required : true,
+        unique : true
     },
     username: {
-        type: String
+        type: String,
+        required : true,
+        unique : true
     },
     password: {
-        type: String
+        type: String,
+        required : true
     },
     phone: {
-        type: Number
+        type: Number,
+        required : true
     },
     date_of_birth:{
-        type: String
+        type: Date
     },
     address: {
         type: String
