@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Customers = require('../models/customersModel');
 const {check, validationResult} = require('express-validator');
-const brcyptjs = require('bcryptjs');
+const bcryptjs = require('bcryptjs'); // for pw encryption
+const authCustomer = require('../middleware/authCustomer');
+// register for customer route
 router.post('/customers/insert',[
     check('email',"Email is required!").not().isEmpty(),
     check('username', "It is not valid username").isAlpha()
@@ -26,16 +28,36 @@ router.post('/customers/insert',[
                 date_of_birth : date_of_birth,
                 address : address
             })
-        data.save();
+        data.save()
+        .then(function(result){
+            res.status(201).json({message : "Customer register success" })
+
+        })
+        .catch(function(error){
+            res.status(500).json({message : error })
+        })
         })
     }
 else{
-    res.send(errors.array())
+    res.status(400).json(errors.array())
     }
 })
-router.get('/customers/fetch', function(req,res){
-    Customers.find().then(function(customersdata){
-        res.send(customersdata)
+// end of register route
+
+// login route for customer
+router.get('/customers/login', function(req,res){
+    Customers.findOne({username : req.body.username})
+    .then(function(customerData){
+        if(customerData === null){
+            return res.status(201).json({message : "Customer Login Successfull!!" })
+        }
+        bcryptjs.compare(req.body.password, customerData.password, function(error, cresult){
+            if(error){
+                return res.status(401).json({message : "Customer Auth Fail!!"})
+            }
+        })
     })
+    .catch()
 })
+// end of login route
 module.exports = router;
