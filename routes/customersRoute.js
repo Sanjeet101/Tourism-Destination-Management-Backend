@@ -4,6 +4,7 @@ const Customers = require('../models/customersModel');
 const {check, validationResult} = require('express-validator');
 const bcryptjs = require('bcryptjs'); // for pw encryption
 const authCustomer = require('../middleware/authCustomer');
+const jwt = require('jsonwebtoken')
 // register for customer route
 router.post('/customers/insert',[
     check('email',"Email is required!").not().isEmpty(),
@@ -18,7 +19,7 @@ router.post('/customers/insert',[
         const phone = req.body.phone;
         const date_of_birth = req.body.date_of_birth;
         const address = req.body.address;
-        brcyptjs.hash(password, 10, function(err, hash){
+        bcryptjs.hash(password, 10, function(err, hash){
             const data = new Customers({
                 fullname : fullname,
                 email : email,
@@ -49,12 +50,16 @@ router.get('/customers/login', function(req,res){
     Customers.findOne({username : req.body.username})
     .then(function(customerData){
         if(customerData === null){
-            return res.status(201).json({message : "Customer Login Successfull!!" })
+            return res.status(401).json({message : "Authentication Failed!!" })
         }
         bcryptjs.compare(req.body.password, customerData.password, function(error, cresult){
-            if(error){
-                return res.status(401).json({message : "Customer Auth Fail!!"})
+            if(cresult === false){
+                res.status(401).json({message:"Customer Auth Failed!!!"})
             }
+           //token
+            const token = jwt.sign({CustomerId : customerData._id}, 'secretkey');
+            console.log(token)
+            res.status(200).json({message : "Customer Auth Success", token : token})
         })
     })
     .catch()
