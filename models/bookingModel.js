@@ -10,8 +10,6 @@ const Booking = mongoose.model('Booking', {
     },
     username: {
         type: String,
-        required : true,
-        unique : true
     },
     destination: {
         type: String,
@@ -29,7 +27,10 @@ const Booking = mongoose.model('Booking', {
     },
     phone:{
         type : Number,
-        require : true
+        required : true
+    },
+    customerType:{
+        type : String
     }
 })
 module.exports = Booking;

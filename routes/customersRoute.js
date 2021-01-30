@@ -7,9 +7,7 @@ const authCustomer = require('../middleware/authCustomer');
 const jwt = require('jsonwebtoken')
 // register for customer route
 router.post('/customers/insert',[
-    check('email',"Email is required!").not().isEmpty(),
-    check('username', "It is not valid username").isAlpha()
-], function(req,res){
+    check('email',"Email is required!").not().isEmpty(),], function(req,res){
     const errors = validationResult(req);
     if(errors.isEmpty()){
         const fullname = req.body.fullname;
@@ -38,16 +36,17 @@ router.post('/customers/insert',[
             res.status(500).json({message : error })
         })
         })
-    }
-else{
+}
+else
+{
     res.status(400).json(errors.array())
     }
 })
 // end of register route
 
 // login route for customer
-router.get('/customers/login', function(req,res){
-    Customers.findOne({username : req.body.username})
+router.post('/customers/login', function(req,res){
+    Customers.findOne({email : req.body.email})
     .then(function(customerData){
         if(customerData === null){
             return res.status(401).json({message : "Authentication Failed!!" })
