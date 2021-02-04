@@ -15,8 +15,8 @@ router.post('/customers/insert',[
         const username = req.body.username;
         const password = req.body.password;
         const phone = req.body.phone;
-        const date_of_birth = req.body.date_of_birth;
         const address = req.body.address;
+        const accountType = req.body.accountType;
         bcryptjs.hash(password, 10, function(err, hash){
             const data = new Customers({
                 fullname : fullname,
@@ -24,12 +24,12 @@ router.post('/customers/insert',[
                 username : username,
                 password : hash,
                 phone : phone,
-                date_of_birth : date_of_birth,
-                address : address
+                address : address,
+                accountType : accountType
             })
         data.save()
         .then(function(result){
-            res.status(201).json({message : "Customer register success" })
+            res.status(201).json({message : "Customer Registered Success!!" })
 
         })
         .catch(function(error){

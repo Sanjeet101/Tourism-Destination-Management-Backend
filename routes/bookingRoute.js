@@ -23,7 +23,8 @@ router.post('/booking/submit',authCustomer.verifyCustomer, authCustomer.verifyAd
         no_of_people:no_of_people,
         departure:departure,
         arrival:arrival,
-        phone:phone
+        phone:phone,
+        
     })
     data.save()
     .then(function(result){
@@ -40,7 +41,7 @@ res.status(400).json(errors.array())
 }
 })
 //delete
-router.delete('/booking/delete/:id', function(req,res){
+router.delete('/booking/delete/:id',authCustomer.verifyCustomer,authCustomer.verifyAdmin, function(req,res){
     const id = req.params.id;
     Booking.deleteOne({_id : id})
     .then(function(result){
@@ -51,7 +52,7 @@ router.delete('/booking/delete/:id', function(req,res){
     })
 })
 //update
-router.put('/booking/update/:id', function(req,res){
+router.put('/booking/update/:id',authCustomer.verifyCustomer,authCustomer.verifyAdmin, function(req,res){
     const id = req.params.id;
     const fullname = req.body.fullname;
     const email = req.body.email;
@@ -61,6 +62,7 @@ router.put('/booking/update/:id', function(req,res){
     const departure = req.body.departure;
     const arrival = req.body.arrival;
     const phone = req.body.phone;
+    
     
     Booking.updateOne({_id : id}, {fullname : fullname, email : email, username: username,destination : destination, no_of_people : no_of_people, departure:departure, arrival:arrival, phone:phone })
     .then(function(result){

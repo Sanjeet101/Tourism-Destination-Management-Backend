@@ -21,11 +21,13 @@ const Customers = mongoose.model('Customers', {
         type: Number,
         required : true
     },
-    date_of_birth:{
-        type: Date
-    },
     address: {
         type: String
+    },
+    accountType:{
+        type : String,
+        required : true,
+        enum : ['Admin','Customer']
     }
 })
 module.exports = Customers;

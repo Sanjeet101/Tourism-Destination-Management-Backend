@@ -20,7 +20,8 @@ const Booking = mongoose.model('Booking', {
         required : true
     },
     departure:{
-        type: Date
+        type: Date,
+        required : true
     },
     arrival: {
         type: Date
@@ -28,9 +29,6 @@ const Booking = mongoose.model('Booking', {
     phone:{
         type : Number,
         required : true
-    },
-    customerType:{
-        type : String
     }
 })
 module.exports = Booking;
