@@ -53,11 +53,10 @@ router.post('/customers/login', function(req,res){
         }
         bcryptjs.compare(req.body.password, customerData.password, function(error, cresult){
             if(cresult === false){
-                res.status(401).json({message:"Customer Auth Failed!!!"})
+            return res.status(401).json({message:"Customer Auth Failed!!!"})
             }
            //token
             const token = jwt.sign({CustomerId : customerData._id}, 'secretkey');
-            console.log(token)
             res.status(200).json({message : "Customer Auth Success", token : token})
         })
     })

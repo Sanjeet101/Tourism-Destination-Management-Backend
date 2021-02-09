@@ -4,7 +4,13 @@ const Booking = require('../models/bookingModel');
 const {check, validationResult} = require('express-validator');
 const authCustomer = require('../middleware/authCustomer');
 const jwt = require('jsonwebtoken')
-router.post('/booking/submit',authCustomer.verifyCustomer, authCustomer.verifyAdmin, function(req,res){
+const uploadImage = require('../middleware/imageUpload')
+
+router.post('/booking/submit',authCustomer.verifyAdmin,uploadImage.single('image'), function(req,res){
+    console.log(req.file);
+    if(req.file == undefined){
+        return res.status(400).json({message:"Inavalid Image!!"})
+    }
     const errors = validationResult(req);
     if(errors.isEmpty()){
     const fullname = req.body.fullname;
@@ -15,6 +21,7 @@ router.post('/booking/submit',authCustomer.verifyCustomer, authCustomer.verifyAd
     const departure = req.body.departure;
     const arrival = req.body.arrival;
     const phone = req.body.phone;
+    const image = req.file.path;
     const data = new Booking({
         fullname:fullname,
         email:email,
@@ -24,6 +31,7 @@ router.post('/booking/submit',authCustomer.verifyCustomer, authCustomer.verifyAd
         departure:departure,
         arrival:arrival,
         phone:phone,
+        image:image
         
     })
     data.save()
@@ -41,18 +49,18 @@ res.status(400).json(errors.array())
 }
 })
 //delete
-router.delete('/booking/delete/:id',authCustomer.verifyCustomer,authCustomer.verifyAdmin, function(req,res){
+router.delete('/booking/delete/:id',authCustomer.verifyAdmin, function(req,res){
     const id = req.params.id;
     Booking.deleteOne({_id : id})
     .then(function(result){
-        res.status().json({message : "Booking deleted!!"})
+        res.status(200).json({message : "Booking deleted!!"})
     })
     .catch(function(error){
         res.status(500).json({message : error})
     })
 })
 //update
-router.put('/booking/update/:id',authCustomer.verifyCustomer,authCustomer.verifyAdmin, function(req,res){
+router.put('/booking/update/:id',authCustomer.verifyAdmin, function(req,res){
     const id = req.params.id;
     const fullname = req.body.fullname;
     const email = req.body.email;
@@ -62,9 +70,9 @@ router.put('/booking/update/:id',authCustomer.verifyCustomer,authCustomer.verify
     const departure = req.body.departure;
     const arrival = req.body.arrival;
     const phone = req.body.phone;
+    const image = req.file.path;
     
-    
-    Booking.updateOne({_id : id}, {fullname : fullname, email : email, username: username,destination : destination, no_of_people : no_of_people, departure:departure, arrival:arrival, phone:phone })
+    Booking.updateOne({_id : id}, {fullname : fullname, email : email, username: username,destination : destination, no_of_people : no_of_people, departure:departure, arrival:arrival, phone:phone, image:image })
     .then(function(result){
         res.status(200).json({message : "Booking Updated"})
     })
