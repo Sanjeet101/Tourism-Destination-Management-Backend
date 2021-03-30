@@ -10,32 +10,26 @@ router.post('/customers/insert',[
     check('email',"Email is required!").not().isEmpty(),], function(req,res){
     const errors = validationResult(req);
     if(errors.isEmpty()){
-        const fullname = req.body.fullname;
-        const email = req.body.email;
+        const name = req.body.name;
         const username = req.body.username;
+        const email = req.body.email;
         const password = req.body.password;
-        const phone = req.body.phone;
-        const address = req.body.address;
         const accountType = req.body.accountType;
         bcryptjs.hash(password, 10, function(err, hash){
             const data = new Customers({
-                fullname : fullname,
-                email : email,
+                name : name,
                 username : username,
+                email : email,
                 password : hash,
-                phone : phone,
-                address : address,
                 accountType : accountType
             })
         data.save()
         .then(function(result){
-            res.status(201).json({message : "Customer Registered Success!!" })
-
+            res.status(201).json({success : true, message : "Customer successfully registered!"})
+        }).catch(function(e){
+            res.status(500).json({success : false, messgae : e})
         })
-        .catch(function(error){
-            res.status(500).json({message : error })
-        })
-        })
+    })
 }
 else
 {
@@ -45,22 +39,40 @@ else
 // end of register route
 
 // login route for customer
-router.post('/customers/login', function(req,res){
+router.post('/customers/login', function(req, res){
     Customers.findOne({email : req.body.email})
     .then(function(customerData){
-        if(customerData === null){
-            return res.status(401).json({message : "Authentication Failed!!" })
+        if(customerData == null){
+            console.log(customerData)
+            return res.status(401).json({message : "Please enter a valid email"})
         }
-        bcryptjs.compare(req.body.password, customerData.password, function(error, cresult){
-            if(cresult === false){
-            return res.status(401).json({message:"Customer Auth Failed!!!"})
+        bcryptjs.compare(req.body.password, customerData.password, function(err, cresult){
+            if(cresult===false){
+                return res.status(401).json({success : false, message : "Authentication failed"})
             }
-           //token
-            const token = jwt.sign({CustomerId : customerData._id}, 'secretkey');
-            res.status(200).json({message : "Customer Auth Success", token : token})
+
+            // else{
+            //     res.status(202).json({message : "Login Successfull"})
+            // }
+            // console.log("Hello")
+            // if(err){
+            //     return res.status(401).json({message : "Authentication failed"})
+            // }
+            const token = jwt.sign({CustomerId : customerData._id}, 'secretkey')
+            // console.log(token)
+            res.status(200).json({success : true, message: "Auth success", token : token, accountType : customerData.accountType})
         })
-    })
+    })  
     .catch()
 })
 // end of login route
+router.get('/profile',function(req,res){
+    Customers.findOne({_id: req.user._id})
+    .the(function(data){
+        res.status(200).json(data)
+    })
+    .catch(function(e){
+        res.status(500).json({error : e})
+    })
+})
 module.exports = router;

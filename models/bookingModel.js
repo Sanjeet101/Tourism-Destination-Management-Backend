@@ -1,34 +1,34 @@
 const mongoose = require('mongoose');
 const Booking = mongoose.model('Booking', {
     fullname: {
-        type: String
+        type: String,
+        
     },
     email: {
         type: String,
-        required : true,
+        
         unique : true
     },
     username: {
-        type: String,
+        type: String
     },
     destination: {
-        type: String,
-        required : true
+        type: String
+      
     },
     no_of_people: {
-        type: Number,
-        required : true
+        type: Number
     },
     departure:{
-        type: Date,
-        required : true
+        type: Number
+        
     },
     arrival: {
-        type: Date
+        type: Number
     },
     phone:{
-        type : Number,
-        required : true
+        type : Number
+       
     },
     image:{
         type : String
