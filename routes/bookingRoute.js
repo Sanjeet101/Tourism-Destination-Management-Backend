@@ -4,9 +4,9 @@ const Booking = require('../models/bookingModel');
 const {check, validationResult} = require('express-validator');
 const authCustomer = require('../middleware/authCustomer');
 const jwt = require('jsonwebtoken')
-const uploadImage = require('../middleware/imageUpload')
 
-router.post('/booking/submit',authCustomer.verifyAdmin, function(req,res){
+
+router.post('/booking/submit', function(req,res){
     
     const errors = validationResult(req);
     if(errors.isEmpty()){
@@ -27,7 +27,7 @@ router.post('/booking/submit',authCustomer.verifyAdmin, function(req,res){
         no_of_people:no_of_people,
         departure:departure,
         arrival:arrival,
-        phone:phone,
+        phone:phone
         
         
     })

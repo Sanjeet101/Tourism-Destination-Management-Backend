@@ -6,7 +6,6 @@ const Booking = mongoose.model('Booking', {
     },
     email: {
         type: String,
-        
         unique : true
     },
     username: {
@@ -17,17 +16,17 @@ const Booking = mongoose.model('Booking', {
       
     },
     no_of_people: {
-        type: Number
+        type: String
     },
     departure:{
-        type: Number
+        type: String
         
     },
     arrival: {
-        type: Number
+        type: String
     },
     phone:{
-        type : Number
+        type : String
        
     }
 })
