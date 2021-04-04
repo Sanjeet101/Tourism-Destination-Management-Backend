@@ -6,11 +6,8 @@ const authCustomer = require('../middleware/authCustomer');
 const jwt = require('jsonwebtoken')
 const uploadImage = require('../middleware/imageUpload')
 
-router.post('/booking/submit',authCustomer.verifyAdmin,uploadImage.single('image'), function(req,res){
-    console.log(req.file);
-    if(req.file == undefined){
-        return res.status(400).json({message:"Inavalid Image!!"})
-    }
+router.post('/booking/submit',authCustomer.verifyAdmin, function(req,res){
+    
     const errors = validationResult(req);
     if(errors.isEmpty()){
     const fullname = req.body.fullname;
@@ -21,7 +18,7 @@ router.post('/booking/submit',authCustomer.verifyAdmin,uploadImage.single('image
     const departure = req.body.departure;
     const arrival = req.body.arrival;
     const phone = req.body.phone;
-    const image = req.file.path;
+ 
     const data = new Booking({
         fullname:fullname,
         email:email,
@@ -31,7 +28,7 @@ router.post('/booking/submit',authCustomer.verifyAdmin,uploadImage.single('image
         departure:departure,
         arrival:arrival,
         phone:phone,
-        image:image
+        
         
     })
     data.save()
@@ -70,9 +67,9 @@ router.put('/booking/update/:id',authCustomer.verifyAdmin, function(req,res){
     const departure = req.body.departure;
     const arrival = req.body.arrival;
     const phone = req.body.phone;
-    const image = req.file.path;
     
-    Booking.updateOne({_id : id}, {fullname : fullname, email : email, username: username,destination : destination, no_of_people : no_of_people, departure:departure, arrival:arrival, phone:phone, image:image })
+    
+    Booking.updateOne({_id : id}, {fullname : fullname, email : email, username: username,destination : destination, no_of_people : no_of_people, departure:departure, arrival:arrival, phone:phone})
     .then(function(result){
         res.status(200).json({message : "Booking Updated"})
     })

@@ -29,9 +29,6 @@ const Booking = mongoose.model('Booking', {
     phone:{
         type : Number
        
-    },
-    image:{
-        type : String
     }
 })
 module.exports = Booking;
