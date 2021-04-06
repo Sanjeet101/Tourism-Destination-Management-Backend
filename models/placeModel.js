@@ -11,7 +11,7 @@ const Place = mongoose.model('Place', {
     placeprice: {
         type: String
     },
-    image :{
+    pimage :{
         type: String
     }
 })
