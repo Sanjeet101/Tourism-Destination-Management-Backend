@@ -13,13 +13,13 @@ router.post('/place/add', upload.single('pimage'), function (req, res) {
         return res.status(500).json({ message: 'Invalid file format' });
     }
     const placename = req.body.placename;
-    const pdesc = req.body.pdesc;
-    const pprice = req.body.pprice;
+    const placedesc = req.body.placedesc;
+    const placeprice = req.body.placeprice;
 
 
     const data = new Place({
         placename: placename,
-        pdesc: pdesc,
+        placedesc: placedesc,
         placeprice: placeprice,
         pimage: req.file.filename,
     });
@@ -40,7 +40,7 @@ router.post('/place/add', upload.single('pimage'), function (req, res) {
 router.delete('/place/delete/:id', function (req, res) {
     // extra -- check if id exists
     const pid = req.params.id;
-    Product.deleteOne({ _id: id })
+    Place.deleteOne({ _id: id })
         .then(function (result) {
             res.status().json({ message: 'Place deleted' });
         })
