@@ -9,7 +9,6 @@ const Contact = mongoose.model('Contact', {
     },
     email: {
         type: String,
-        
         unique : true
     },
     subject: {
