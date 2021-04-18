@@ -40,12 +40,12 @@ router.post('/place/add', upload.single('pimage'), function (req, res) {
 router.delete('/place/delete/:id', function (req, res) {
     // extra -- check if id exists
     const pid = req.params.id;
-    Place.deleteOne({ _id: id })
+    Place.deleteOne({ _id: pid })
         .then(function (result) {
-            res.status().json({ message: 'Place deleted' });
+            res.status(200).json({ message: 'Place deleted' });
         })
         .catch(function (error) {
-            res.status(500).json({ message: err });
+            res.status(500).json({ message: error });
         });
 });
 
