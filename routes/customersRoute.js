@@ -59,13 +59,4 @@ router.post('/customers/login', function (req, res) {
         .catch()
 })
 // end of login route
-router.get('/profile', function (req, res) {
-    Customers.findOne({ _id: req.user._id })
-        .the(function (data) {
-            res.status(200).json(data)
-        })
-        .catch(function (e) {
-            res.status(500).json({ error: e })
-        })
-})
 module.exports = router;

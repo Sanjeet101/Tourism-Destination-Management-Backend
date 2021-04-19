@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "this is my final assignment",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "directories": {
+    "test": "test"
   },
+ 
   "author": "Sanjeet Pandey",
   "license": "ISC",
   "dependencies": {
@@ -13,9 +14,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
+    "jest": "^26.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.11",
     "multer": "^1.4.2",
     "something": "0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
   }
 }
