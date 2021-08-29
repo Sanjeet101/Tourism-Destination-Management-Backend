@@ -6,7 +6,6 @@
   "directories": {
     "test": "test"
   },
- 
   "author": "Sanjeet Pandey",
   "license": "ISC",
   "dependencies": {
